@@ -1,0 +1,25 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+processors:
+  memory_limiter:
+    limit_mib: 100
+    spike_limit_mib: 10
+    check_interval: 5s
+exporters:
+  logging:
+    loglevel: debug
+extensions:
+  health_check:
+    port: 13133
+service:
+  pipelines:
+    traces:
+      receivers:
+      - otlp
+      processors:
+      - memory_limiter
+      exporters:
+      - logging
